@@ -33,23 +33,15 @@ class ExtractionService(ProcessService):
         """
         if page.is_index_file:
             print("Processing index page {}".format(page))
-            albums = page.get_albums()
 
-            for album in albums:
+            # albums = page.get_albums()
+
+            for album in page.get_albums():
                 print("Processing album: {}".format(album.index_page.file_system_path))
-                # strip leading v/ from the path
-                album_path = os.path.dirname(album.index_page.site_file_path_normalised)
 
-                # album_path = re.sub(
-                #     pattern='^v/',
-                #     repl='',
-                #     string=album_path
-                # )
-
-                # album_path = album_path.replace('/v', '')
-                album_path = os.path.join(self._target_dir, album_path)
-
-                # album_path = self._normalise_file_name(album_path)
+                album_path = os.path.join(
+                    self._target_dir,
+                    os.path.dirname(album.index_page.site_file_path_normalised))
 
                 self._ensure_sub_folders_exist(album_path)
 
@@ -67,12 +59,6 @@ class ExtractionService(ProcessService):
         else:
             pass
             # print("Processing content page {}".format(page))
-
-    def _normalise_file_name(self, name:str) -> str:
-        name = name.lower()
-        name = name.replace('+','_')
-        name = name.replace('-', '_')
-        return name
 
     def _ensure_sub_folders_exist(self, path:str) -> None:
         """
@@ -97,7 +83,8 @@ class ExtractionService(ProcessService):
         # update data
         # write data back to file
 
-        key = self._normalise_file_name(album.index_page.base_name)
+        # key = self._normalise_file_name(album.index_page.base_name)
+        key = album.index_page.base_name_normalised
 
         data = self._read_yaml(path=file_name)
 
