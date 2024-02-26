@@ -95,7 +95,7 @@ class ExtractionService(ProcessService):
             data['contents'][key] = {}
 
         data['contents'][key]['title'] = album.title
-        data['contents'][key]['title'] = album.sub_title
+        data['contents'][key]['sub_title'] = album.sub_title
         data['contents'][key]['type'] = 'dir'
         data['contents'][key]['thumb'] = {}
         data['contents'][key]['thumb']['src'] = album.thumbnail.file_system_path_normalised

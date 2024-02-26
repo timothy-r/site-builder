@@ -97,13 +97,14 @@ class Page:
         """
             extract Album data from a HTML dom element
         """
-        links = album.find_all('a')
+        # links = album.find_all('a')
 
-        for link in links:
-            album_path = link.get('href')
+        # for link in links:
+            # album_path = link.get('href')
 
         h4 = album.find('h4')
         title = h4.find('a').text.strip()
+        album_path = h4.find('a').get('href')
 
         sub_title = album.find('p').text.strip()
         thumb_nail = album.find('img')
