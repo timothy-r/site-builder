@@ -11,13 +11,13 @@ from site_gen.node.album import Album
 """
 class Page:
 
-    def __init__(self, source_path:str, html:str, site_path:str) -> None:
+    def __init__(self, system_path:str, html:str, site_path:str) -> None:
         """
-            source_path: the file system path of this page
+            system_path: the file system path of this page
             html: the HTML source of this page
             site_path: the path to this file on the site it belongs to
         """
-        self._source_path = source_path
+        self._system_path = system_path
         self._html = html
         self._site_path = site_path
 
@@ -27,14 +27,14 @@ class Page:
         self._extract_contents()
 
     def __repr__(self) -> str:
-        return "Page(source_path='{}', site_path='{}')".format(self._source_path, self._site_path)
+        return "Page(system_path='{}', site_path='{}')".format(self._system_path, self._site_path)
 
     @property
     def site_path(self) -> str:
         return self._site_path
 
     def get_file(self) -> LinkedFile:
-        return LinkedFile(link_path=self._site_path, source_path=self._source_path, parent_path='')
+        return LinkedFile(link_path=self._site_path, system_path=self._system_path, host_page_path='')
 
     def get_pages(self) -> dict:
         """
@@ -88,7 +88,6 @@ class Page:
         albums = []
         # album exist in a div with class 'gallery-album'
         for album in dom_doc.find_all(name="div", attrs={'class': 'gallery-album'}):
-
             albums.append(self._read_album(album=album))
 
         return albums
@@ -97,11 +96,6 @@ class Page:
         """
             extract Album data from a HTML dom element
         """
-        # links = album.find_all('a')
-
-        # for link in links:
-            # album_path = link.get('href')
-
         h4 = album.find('h4')
         title = h4.find('a').text.strip()
         album_path = h4.find('a').get('href')
@@ -112,14 +106,14 @@ class Page:
         return Album(
             index_page = LinkedFile(
                 link_path=album_path,
-                source_path=self._source_path,
-                parent_path=self._site_path),
+                system_path=self._system_path,
+                host_page_path=self._site_path),
             title = title,
             sub_title = sub_title,
             thumbnail = LinkedFile(
                 link_path=thumb_nail.get('src'),
-                source_path=self._source_path,
-                parent_path=self._site_path),
+                system_path=self._system_path,
+                host_page_path=self._site_path),
             thumbnail_alt = thumb_nail.get('alt'),
             thumbnail_height = int(thumb_nail.get('height')),
             thumbnail_width = int(thumb_nail.get('width'))
@@ -151,5 +145,5 @@ class Page:
 
                 self._all_links[base] = LinkedFile(
                     link_path=base,
-                    source_path=self._source_path,
-                    parent_path=self._site_path)
+                    system_path=self._system_path,
+                    host_page_path=self._site_path)

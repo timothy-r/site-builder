@@ -50,7 +50,7 @@ class ProcessService(ABC):
             with open(source_path, mode="r", encoding='utf-8') as f:
                 html = f.read()
 
-                page = Page(source_path=source_path, html=html, site_path=site_path)
+                page = Page(system_path=source_path, html=html, site_path=site_path)
 
                 # specific to this class
                 self._do_page_processing(page=page)

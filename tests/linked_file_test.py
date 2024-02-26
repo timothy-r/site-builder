@@ -22,7 +22,7 @@ class LinkedFileTest(unittest.TestCase):
         link_path = 'test.html'
         source_path = self._root_path + "/test.html"
         parent_path = 'test.html'
-        file = LinkedFile(link_path=link_path, source_path=source_path, parent_path=parent_path)
+        file = LinkedFile(link_path=link_path, system_path=source_path, host_page_path=parent_path)
 
         self.assertFalse(file.exists)
 
@@ -99,7 +99,7 @@ class LinkedFileTest(unittest.TestCase):
         self._add_mock_file(path=source_path)
 
         file_source_path = self._root_path + source_path
-        file = LinkedFile(link_path=link_path, source_path=file_source_path, parent_path=parent_path)
+        file = LinkedFile(link_path=link_path, system_path=file_source_path, host_page_path=parent_path)
         return file
 
 

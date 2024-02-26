@@ -3,19 +3,19 @@ import os
 import re
 
 """
-    encapsulate a source file, its site path and its link path in a HTML document
+    encapsulate a system file, its site path and its link path in a HTML document
 """
 class LinkedFile:
 
-    def __init__(self, link_path:str, source_path:str, parent_path:str) -> None:
+    def __init__(self, link_path:str, system_path:str, host_page_path:str) -> None:
         """
             link_path: the path embeded in the HTML doc to this file
-            source_path: the path to the parent page file on the file system
-            site_path: the path to the page in the site that this file was linked from
+            system_path: the file system path of page this file was extracted from
+            host_page_path: the path to the page in the site that this file was linked from
         """
         self._link_path = link_path
-        self._source_path = source_path
-        self._parent_path = parent_path
+        self._system_path = system_path
+        self._host_page_path = host_page_path
 
         self._exclude_list = [
             'http://gallery.sourceforge.net',
@@ -72,7 +72,7 @@ class LinkedFile:
     @property
     def file_system_path(self) -> str:
 
-        source_location = os.path.dirname(self._source_path)
+        source_location = os.path.dirname(self._system_path)
         return os.path.normpath(os.path.join(source_location, self._link_path))
 
     @property
@@ -83,7 +83,7 @@ class LinkedFile:
     @property
     def site_file_path(self) -> str:
 
-        site_location = os.path.dirname(self._parent_path)
+        site_location = os.path.dirname(self._host_page_path)
         return os.path.normpath(os.path.join(site_location, self._link_path))
 
     @property
@@ -101,11 +101,16 @@ class LinkedFile:
         # site_file_path
         return self._normalise_string(self.base_name)
 
+    @property
+    def file_name_normalised(self) -> str:
+        name = os.path.basename(self._system_path)
+        return self._normalise_string(name=name)
+
     def __repr__(self) -> str:
-        return "LinkedFile(link_path='{}', source_path='{}', parent_path='{}')".format(
+        return "LinkedFile(link_path='{}', system_path='{}', host_page_path='{}')".format(
             self._link_path,
-            self._source_path,
-            self._parent_path
+            self._system_path,
+            self._host_page_path
         )
 
     def _normalise_string(self, name:str) -> str:

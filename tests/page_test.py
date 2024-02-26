@@ -8,27 +8,26 @@ from site_gen.node.page import Page
 class PageTest(unittest.TestCase):
 
     def test_is_index_file(self) -> None:
-        page = Page(source_path='/opt/test/source/index.html', html='', site_path='index.html')
+        page = Page(system_path='/opt/test/source/index.html', html='', site_path='index.html')
 
         self.assertTrue(page.is_index_file)
 
     def test_is_not_index_file(self) -> None:
-        page = Page(source_path='/opt/test/source/images/funky.png', html='', site_path='images/funky.png')
+        page = Page(system_path='/opt/test/source/images/funky.png', html='', site_path='images/funky.png')
 
         self.assertFalse(page.is_index_file)
 
     def test_get_albums(self) -> None:
         album_count = 1
         html = self._get_index_html(albums=album_count)
-        page = Page(source_path='/opt/test/source/index.html', html=html, site_path='index.html')
+        page = Page(system_path='/opt/test/source/index.html', html=html, site_path='index.html')
 
         albums = page.get_albums()
         self.assertEqual(album_count, len(albums))
 
     def test_get_albums_from_non_index_page(self) -> None:
         album_count = 0
-        # html = self._get_index_html(albums=album_count)
-        page = Page(source_path='/opt/test/source/page.html', html='', site_path='page.html')
+        page = Page(system_path='/opt/test/source/page.html', html='', site_path='page.html')
 
         albums = page.get_albums()
         self.assertEqual(album_count, len(albums))
