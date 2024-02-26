@@ -1,0 +1,16 @@
+[x]fix houdini files that are not html files
+* change file names
+* rewrite html references
+
+[] generate the source files for a static site
+    [] rename directories and files
+        * remove special characters
+        * lower case letters
+        * update links in html pages
+    [] organise html files presented in iframes into the right locations
+    [] move images into the relevant sub directories
+
+* pages are either indexes (parents) or leaf pages
+
+* use the page & linkedFile classes
+    * get linked file to rename itself & use that when writing the data yaml files
