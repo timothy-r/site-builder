@@ -26,3 +26,7 @@ class Album():
     # def rename_file_paths(self) -> None:
     #     self.index_page.rename_paths()
     #     self.thumbnail.rename_paths()
+
+    @property
+    def base_name(self) -> str:
+        return self.index_page.base_name

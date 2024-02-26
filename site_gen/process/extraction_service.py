@@ -1,5 +1,6 @@
 import os
 import re
+import yaml
 
 from site_gen.node.page import Page
 from site_gen.node.album import Album
@@ -33,6 +34,7 @@ class ExtractionService(ProcessService):
         if page.is_index_file:
             print("Processing index page {}".format(page))
             albums = page.get_albums()
+
             for album in albums:
                 print("Processing album: {}".format(album.index_page.file_system_path))
                 # strip leading v/ from the path
@@ -51,9 +53,10 @@ class ExtractionService(ProcessService):
 
                 self._ensure_sub_folders_exist(album_path)
 
-                # write to the index.yml file in the index directory
-                album_index_file = album_path + '/index.yml'
-                self._update_data_file(file_name=album_index_file, album=album)
+                # write to the index.yml file in the index directory of these albums
+                index_file = os.path.join(self._target_dir, os.path.dirname(page.site_path), "index.yml") # page.site_path + '/index.yml'
+
+                self._update_index_data_file(file_name=index_file, album=album)
 
                 # copy thumbnail files to the target location
         else:
@@ -85,11 +88,46 @@ class ExtractionService(ProcessService):
             self._ensure_directory_exists(path=sub_path)
 
 
-    def _update_data_file(self, file_name:str, album:Album) -> None:
+    def _update_index_data_file(self, file_name:str, album:Album) -> None:
         # try to read contents
         # update data
         # write data back to file
-        pass
+
+        key = self._normalise_file_name(album.base_name)
+
+        data = self._read_yaml(path=file_name)
+
+        if not 'contents' in data:
+            data['contents'] = {}
+
+        if not key in data['contents']:
+            data['contents'][key] = {}
+
+        data['contents'][key]['title'] = album.title
+        data['contents'][key]['title'] = album.sub_title
+        data['contents'][key]['type'] = 'dir'
+        data['contents'][key]['thumb'] = {}
+        data['contents'][key]['thumb']['src'] = album.thumbnail.file_system_path
+        data['contents'][key]['thumb']['height'] = album.thumbnail_height
+        data['contents'][key]['thumb']['width'] = album.thumbnail_width
+        data['contents'][key]['thumb']['alt'] = album.thumbnail_alt
+
+        self._write_yaml(path=file_name, data=data)
 
     def _copy_thumbnail(self) -> None:
         pass
+
+    def _read_yaml(self, path:str) -> dict:
+        """
+            read yaml file at path
+        """
+        if os.path.exists(path=path):
+            with open(path, 'r') as file:
+                data = yaml.safe_load(file)
+                return data
+        else:
+            return {}
+
+    def _write_yaml(self, path:str, data:dict) -> None:
+        with open(path, 'w') as file:
+            file.write(yaml.safe_dump(data=data))

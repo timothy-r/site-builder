@@ -1,0 +1,43 @@
+index:
+  title: "Home Page"
+  thumb:
+    file: "thumbs/home_thumb.png"
+    height: 60
+    width: 100
+  sub_title: "Home page is the best!"
+  contents: ""
+contents:
+  folder_one:
+    type: "dir"
+    title: "Folder One"
+    src:
+      file: "folder_one/index.yml"
+    thumb:
+      file: "thumbs/folder_thumb.1.png"
+      height: 60
+      width: 100
+      alt: ''
+  digitalis:
+    type: "img"
+    # text: "The digitalis project"
+    title: "Digitalis One"
+    # page: "digitalis01.html"
+    src:
+      file: "images/digitalis01.png"
+      height: 576
+      width: 1024
+    thumb:
+      file: "thumbs/digitalis01_thumb.png"
+      height: 60
+      width: 100
+  post_one:
+    type: "txt"
+    # text: "A bog post"
+    title: "A blog post"
+    # page: "blog_post_1.html"
+    src:
+      file: "pages/blog_1.txt"
+    thumb:
+      file: "thumbs/blog_1_img.png"
+      height: 60
+      width: 100

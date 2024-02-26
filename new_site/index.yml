@@ -1,0 +1,41 @@
+contents:
+  3d_generalist_showreel:
+    thumb:
+      alt: 3D Generalist showreel
+      height: 56
+      src: target/d/1147-2/3D+Generalist+showreel.jpg
+      width: 100
+    title: 3D Generalist showreel
+    type: dir
+  fr:
+    thumb:
+      alt: CV
+      height: 62
+      src: target/d/1014-5/FR.jpg
+      width: 100
+    title: Work history
+    type: dir
+  fx_artist_showreel:
+    thumb:
+      alt: FX artist showreel
+      height: 67
+      src: target/d/1156-4/FX+artist+showreel.png
+      width: 100
+    title: FX artist showreel
+    type: dir
+  houdini_case_studies:
+    thumb:
+      alt: Case studies
+      height: 56
+      src: target/d/1203-2/Houdini+case+studies.jpg
+      width: 100
+    title: Various 3D case studies
+    type: dir
+  vfx_and_compositor_showreel:
+    thumb:
+      alt: Compositor showreel
+      height: 56
+      src: target/d/1161-2/VFX+and+compositor+showreel.jpg
+      width: 100
+    title: VFX and compositor showreel
+    type: dir
