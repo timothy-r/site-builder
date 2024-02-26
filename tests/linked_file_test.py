@@ -39,7 +39,7 @@ class LinkedFileTest(unittest.TestCase):
         self.assertTrue(file.is_html_file)
         self.assertFalse(file.is_media_file)
 
-    def test_not_is_html_file(self) -> None:
+    def test_is_not_html_file(self) -> None:
 
         file = self._create_mock_linked_file(
             link_path='image.png',
@@ -57,6 +57,16 @@ class LinkedFileTest(unittest.TestCase):
         )
 
         self.assertTrue(file.is_index_file)
+
+    def test_is_not_index_page(self) -> None:
+        file = self._create_mock_linked_file(
+            link_path='../../d/343/image.png',
+            source_path='/d/343/image.png',
+            parent_path='../../content.html'
+        )
+
+        self.assertFalse(file.is_index_file)
+
 
     def test_file_system_path(self) -> None:
         file = self._create_mock_linked_file(
