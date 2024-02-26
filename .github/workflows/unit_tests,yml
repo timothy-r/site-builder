@@ -3,11 +3,10 @@
 
 name: Python Tests
 
-on:
-  push:
+on: [push]
 
-  pull_request:
-    branches: [ "main" ]
+  # pull_request:
+  #   branches: [ "main" ]
 
 permissions:
   contents: read
