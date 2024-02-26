@@ -20,3 +20,6 @@ class AlbumTest(unittest.TestCase):
         )
 
         self.assertIsInstance(album, Album)
+
+    # def test_rename_file_paths(self) -> None:
+    #     pass

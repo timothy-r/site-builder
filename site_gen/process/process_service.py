@@ -57,7 +57,7 @@ class ProcessService(ABC):
 
                 for key in pages.keys():
 
-                    print("Extracted page {} from {}".format(pages[key], source_path))
+                    # print("Extracted page {} from {}".format(pages[key], source_path))
 
                     # sub_site_path = os.path.join(page_site_dir, key)
                     self._process_page(source_path=pages[key], site_path=key)
@@ -69,6 +69,6 @@ class ProcessService(ABC):
     def _ensure_directory_exists(self, path:str) -> None:
         location = os.path.dirname(path)
         try:
-            os.makedirs(name=location)
-        except FileExistsError:
-            pass
+            os.makedirs(name=location, exist_ok=True)
+        except FileExistsError as error:
+            print("_ensure_directory_exists failed {}".format(error))

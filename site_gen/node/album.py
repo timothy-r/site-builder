@@ -23,13 +23,6 @@ class Album():
     thumbnail_alt:str = None
     sub_title:str = None
 
-    # def __post_init__(self):
-    #     """
-    #         set defaults values to the title
-    #     """
-    #     if not self.thumbnail_alt:
-    #         self.thumbnail_alt = self.title
-
-    #     if not self.sub_title:
-    #         self.sub_title = self.title
-
+    # def rename_file_paths(self) -> None:
+    #     self.index_page.rename_paths()
+    #     self.thumbnail.rename_paths()

@@ -86,6 +86,8 @@ class LinkedFileTest(unittest.TestCase):
         site_file_path = file.site_file_path
         self.assertEqual('/d/343/image.png', site_file_path)
 
+    # def test_rename_paths(self) -> None:
+    #     pass
 
     def _create_mock_linked_file(
         self,
