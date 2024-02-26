@@ -19,7 +19,7 @@ class Album():
     title:str
     thumbnail:LinkedFile
     thumbnail_width:int
-    thumbnail_heigth:int
+    thumbnail_height:int
     thumbnail_alt:str = None
     sub_title:str = None
 

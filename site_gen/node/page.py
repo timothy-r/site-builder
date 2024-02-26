@@ -117,7 +117,7 @@ class Page:
                 source_path=self._source_path,
                 parent_path=self._site_path),
             thumbnail_alt = thumb_nail.get('alt'),
-            thumbnail_heigth = int(thumb_nail.get('height')),
+            thumbnail_height = int(thumb_nail.get('height')),
             thumbnail_width = int(thumb_nail.get('width'))
         )
 
