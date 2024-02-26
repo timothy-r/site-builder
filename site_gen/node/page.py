@@ -29,6 +29,10 @@ class Page:
     def __repr__(self) -> str:
         return "Page(source_path='{}', site_path='{}')".format(self._source_path, self._site_path)
 
+    @property
+    def site_path(self) -> str:
+        return self._site_path
+
     def get_pages(self) -> dict:
         """
             return a dict of link path : source_system_path
@@ -87,25 +91,19 @@ class Page:
         return albums
 
     def _read_album(self, album) -> Album:
+        """
+            extract Album data from a HTML dom element
+        """
         links = album.find_all('a')
 
         for link in links:
             album_path = link.get('href')
-            # print("album_path: {}".format(album_path))
 
         h4 = album.find('h4')
         title = h4.find('a').text.strip()
-        # print("title: {}".format(title))
 
-        # title = album.find()
         sub_title = album.find('p').text.strip()
-        # print("sub_title: {}".format(sub_title))
         thumb_nail = album.find('img')
-        # print('thumb_nail : {}'.format(thumb_nail))
-        # thumb_nail_width = int(thumb_nail.get('width'))
-        # # print('thumb_nail_width : {}'.format(thumb_nail_width))
-        # thumb_nail_height = int(thumb_nail.get('height'))
-        # thumb_nail_alt = thumb_nail.get('alt')
 
         return Album(
             index_page = LinkedFile(
