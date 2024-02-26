@@ -9,7 +9,7 @@ class LinkedFile:
     def __init__(self, link_path:str, source_path:str, parent_path:str) -> None:
         """
             link_path: the path embeded in the HTML doc to this file
-            source_path: the path to the file on the file system
+            source_path: the path to the parent page file on the file system
             site_path: the path to the page in the site that this file was linked from
         """
         self._link_path = link_path

@@ -26,6 +26,9 @@ class Page:
         # extract contents
         self._extract_contents()
 
+    def __repr__(self) -> str:
+        return "Page(source_path='{}', site_path='{}')".format(self._source_path, self._site_path)
+
     def get_pages(self) -> dict:
         """
             return a dict of link path : source_system_path
@@ -66,7 +69,7 @@ class Page:
 
         return dom_doc.prettify()
 
-    def get_albums(self) -> list:
+    def get_albums(self) -> list[Album]:
         """
             extract the albums from an index page
         """

@@ -25,8 +25,14 @@ class PageTest(unittest.TestCase):
         albums = page.get_albums()
         self.assertEqual(album_count, len(albums))
 
-        for album in albums:
-            print(album)
+    def test_get_albums_from_non_index_page(self) -> None:
+        album_count = 0
+        # html = self._get_index_html(albums=album_count)
+        page = Page(source_path='/opt/test/source/page.html', html='', site_path='page.html')
+
+        albums = page.get_albums()
+        self.assertEqual(album_count, len(albums))
+
 
     def _get_index_html(self, albums=4) -> str:
 
@@ -52,5 +58,4 @@ class PageTest(unittest.TestCase):
 
         dom_doc = BeautifulSoup(html, 'html.parser')
 
-        # print(dom_doc.prettify())
         return dom_doc.prettify()
