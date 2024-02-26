@@ -28,15 +28,40 @@ class LinkedFileTest(unittest.TestCase):
 
     def test_exists(self) -> None:
 
-        link_path = 'test.html'
-        source_path = self._root_path + "/test.html"
-        site_path = 'test.html'
-
-        self._add_mock_file(path='/test.html')
-
-        file = LinkedFile(link_path=link_path, source_path=source_path, site_path=site_path)
+        file = self._create_mock_linked_file()
 
         self.assertTrue(file.exists)
+
+    def test_is_html_file(self) -> None:
+
+        file = self._create_mock_linked_file()
+
+        self.assertTrue(file.is_html_file)
+        self.assertFalse(file.is_media_file)
+
+    def test_not_is_html_file(self) -> None:
+
+        file = self._create_mock_linked_file(
+            link_path='image.png',
+            source_path='/image.png',
+            site_path='image.png'
+        )
+        self.assertFalse(file.is_html_file)
+        self.assertTrue(file.is_media_file)
+
+
+    def _create_mock_linked_file(
+        self,
+        link_path:str='index.html',
+        source_path:str='/index.html',
+        site_path:str='index.html'
+    ) -> LinkedFile:
+
+        self._add_mock_file(path=source_path)
+
+        file_source_path = self._root_path + source_path
+        file = LinkedFile(link_path=link_path, source_path=file_source_path, site_path=site_path)
+        return file
 
     def _add_mock_file(self, path:str, contents:str = '') -> None:
         full_path = self._root_path + path
