@@ -77,5 +77,5 @@ class Page:
 
                 self._all_links[base] = LinkedFile(
                     link_path=base,
-                    source_page_path=self._source_path,
+                    source_path=self._source_path,
                     site_path=self._site_path)
