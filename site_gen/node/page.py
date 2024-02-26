@@ -1,4 +1,5 @@
 import re
+import pathlib
 
 from bs4 import BeautifulSoup as bs
 
@@ -63,6 +64,23 @@ class Page:
             tag['href'] = base
 
         return dom_doc.prettify()
+
+    def get_albums(self) -> list:
+        """
+            extract the albums from an index page
+        """
+        if not self.is_index:
+            return []
+
+        dom_doc = bs(self._html, 'html.parser')
+
+    @property
+    def is_index_file(self) -> bool:
+        """
+            is this an index page?
+        """
+        return pathlib.PurePath(self._site_path).name == 'index.html'
+
 
     def _extract_contents(self) -> None:
         dom_doc = bs(self._html, 'html.parser')
