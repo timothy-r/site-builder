@@ -103,7 +103,7 @@ class LinkedFile:
 
     @property
     def file_name_normalised(self) -> str:
-        name = os.path.basename(self._system_path)
+        name = os.path.basename(self._link_path)
         return self._normalise_string(name=name)
 
     def __repr__(self) -> str:
