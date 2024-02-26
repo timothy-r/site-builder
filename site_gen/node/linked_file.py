@@ -2,18 +2,18 @@ import pathlib
 import os
 
 """
-    encapsulate a source file & it's site path
+    encapsulate a source file, its site path and its link path in a HTML document
 """
 class LinkedFile:
 
-    def __init__(self, link_path:str, source_page_path:str, site_path:str) -> None:
+    def __init__(self, link_path:str, source_path:str, site_path:str) -> None:
         """
-            link_path: the path embeded in the HTML doc
-            source_page_path: the path to the page file (of the HTML doc) on the file system
-            site_path: the path to the page in the site
+            link_path: the path embeded in the HTML doc to this file
+            source_path: the path to the file on the file system
+            site_path: the path to the page in the site that this file was linked from
         """
         self._link_path = link_path
-        self._source_page_path = source_page_path
+        self._source_path = source_path
         self._site_path = site_path
 
         self._exclude_list = [
@@ -64,7 +64,7 @@ class LinkedFile:
     @property
     def linked_file_path(self) -> str:
 
-        source_location = os.path.dirname(self._source_page_path)
+        source_location = os.path.dirname(self._source_path)
         return os.path.normpath(os.path.join(source_location, self._link_path))
 
     @property

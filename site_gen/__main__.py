@@ -1,7 +1,7 @@
 import sys
-from site.node.page import Page
-from site.process.clean_source_service import CleanSourceService
-from site.process.extraction_service import ExtractionService
+from site_gen.node.page import Page
+from site_gen.process.clean_source_service import CleanSourceService
+from site_gen.process.extraction_service import ExtractionService
 
 def main(args):
 

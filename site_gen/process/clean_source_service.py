@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from site.node.page import Page
+from site_gen.node.page import Page
 
 class CleanSourceService:
 
