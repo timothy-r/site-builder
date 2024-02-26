@@ -2,10 +2,16 @@ from abc import ABC, abstractmethod
 import os
 
 from site_gen.node.page import Page
+
 """
     Implements the processing of a set of linked resources (pages or data)
 """
 class ProcessService(ABC):
+
+    def __init__(self, root_page:str, target_dir:str) -> None:
+        super().__init__()
+        self._root_page = root_page
+        self._target_dir = target_dir
 
     def process(self) -> None:
 

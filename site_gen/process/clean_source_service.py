@@ -7,9 +7,8 @@ from site_gen.process.process_service import ProcessService
 class CleanSourceService(ProcessService):
 
     def __init__(self, root_page:str, target_dir:str) -> None:
+        super().__init__(root_page=root_page, target_dir=target_dir)
 
-        self._root_page = root_page
-        self._target_dir = target_dir
 
     def _do_page_processing(self, page:Page) -> None:
         self._write_html_page(page = page) #relative_path=site_path, html=page.get_html())
