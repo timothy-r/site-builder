@@ -76,6 +76,8 @@ class ExtractionService(ProcessService):
                 self._copy_thumbnail(album=album, target_path=thumbnail_target_path)
         else:
             pass
+            content = page.get_content()
+
             # print("Processing content page {}".format(page))
 
     def _ensure_sub_folders_exist(self, path:str) -> None:

@@ -1,5 +1,6 @@
 import re
 import pathlib
+import os
 
 from bs4 import BeautifulSoup as bs
 
@@ -76,6 +77,16 @@ class Page:
 
         return dom_doc.prettify()
 
+    def get_content(self):
+        """
+            extract the contents of a leaf page
+        """
+        if self.is_index_file:
+            return
+
+        # title - from html doc
+
+
     def get_albums(self) -> list[Album]:
         """
             extract the albums from an index page
@@ -90,7 +101,44 @@ class Page:
         for album in dom_doc.find_all(name="div", attrs={'class': 'gallery-album'}):
             albums.append(self._read_album(album=album))
 
+        # add the leaf page album contents
+        for alt_album in dom_doc.find_all(name='div', attrs={'class':'gallery-thumb'}):
+            albums.append(self.read_leaf_page_album(album=alt_album))
+
         return albums
+
+    def read_leaf_page_album(self, album) -> Album:
+    #       <a href="Pict02.jpg.html">
+    #    <img alt="Boy and girl Eskimo" height="80" src="../../../../d/699-2/Pict02.jpg" width="100"/>
+    #   </a>
+
+        # parts = os.path.split(os.path.dirname(self._site_path))
+        # last_dir = parts[-1]
+        album_path = album.find('a').get('href')
+
+        thumb_nail = album.find('img')
+        title = thumb_nail.get('alt')
+
+        last_dir = title.replace(' ', '_')
+        last_dir = last_dir.lower()
+
+        album_path = os.path.join(last_dir, album_path)
+
+        return Album(
+            index_page = LinkedFile(
+                link_path=album_path,
+                system_path=self._system_path,
+                host_page_path=self._site_path),
+            title = title,
+            sub_title = title,
+            thumbnail = LinkedFile(
+                link_path=thumb_nail.get('src'),
+                system_path=self._system_path,
+                host_page_path=self._site_path),
+            thumbnail_alt = thumb_nail.get('alt'),
+            thumbnail_height = int(thumb_nail.get('height')),
+            thumbnail_width = int(thumb_nail.get('width'))
+        )
 
     def _read_album(self, album) -> Album:
         """
