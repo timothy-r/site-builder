@@ -33,6 +33,9 @@ class Page:
     def site_path(self) -> str:
         return self._site_path
 
+    def get_file(self) -> LinkedFile:
+        return LinkedFile(link_path=self._site_path, source_path=self._source_path, parent_path='')
+
     def get_pages(self) -> dict:
         """
             return a dict of link path : source_system_path

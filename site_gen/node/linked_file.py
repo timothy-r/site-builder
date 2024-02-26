@@ -1,5 +1,6 @@
 import pathlib
 import os
+import re
 
 """
     encapsulate a source file, its site path and its link path in a HTML document
@@ -75,20 +76,30 @@ class LinkedFile:
         return os.path.normpath(os.path.join(source_location, self._link_path))
 
     @property
+    def file_system_path_normalised(self) -> str:
+        # site_file_path
+        return self._normalise_string(self.file_system_path)
+
+    @property
     def site_file_path(self) -> str:
 
         site_location = os.path.dirname(self._parent_path)
         return os.path.normpath(os.path.join(site_location, self._link_path))
 
-    def rename_paths(self) ->  None:
-        """
-            rename the file paths
-        """
+    @property
+    def site_file_path_normalised(self) -> str:
+        # site_file_path
+        return self._normalise_string(self.site_file_path)
 
     @property
     def base_name(self) -> str:
         parts = os.path.split(os.path.dirname(self._link_path))
         return parts[-1]
+
+    @property
+    def base_name_normalised(self) -> str:
+        # site_file_path
+        return self._normalise_string(self.base_name)
 
     def __repr__(self) -> str:
         return "LinkedFile(link_path='{}', source_path='{}', parent_path='{}')".format(
@@ -96,3 +107,13 @@ class LinkedFile:
             self._source_path,
             self._parent_path
         )
+
+    def _normalise_string(self, name:str) -> str:
+
+        name = re.sub(pattern='^v/',repl='',string=name)
+        name = re.sub(pattern='^d/',repl='',string=name)
+
+        name = name.lower()
+        name = name.replace('+','_')
+        name = name.replace('-', '_')
+        return name

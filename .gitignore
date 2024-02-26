@@ -2,3 +2,4 @@
 *.venv
 target/
 *.log
+new_site/

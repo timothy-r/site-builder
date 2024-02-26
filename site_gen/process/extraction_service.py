@@ -38,23 +38,28 @@ class ExtractionService(ProcessService):
             for album in albums:
                 print("Processing album: {}".format(album.index_page.file_system_path))
                 # strip leading v/ from the path
-                album_path = os.path.dirname(album.index_page.site_file_path)
+                album_path = os.path.dirname(album.index_page.site_file_path_normalised)
 
-                album_path = re.sub(
-                    pattern='^v/',
-                    repl='',
-                    string=album_path
-                )
+                # album_path = re.sub(
+                #     pattern='^v/',
+                #     repl='',
+                #     string=album_path
+                # )
 
                 # album_path = album_path.replace('/v', '')
                 album_path = os.path.join(self._target_dir, album_path)
 
-                album_path = self._normalise_file_name(album_path)
+                # album_path = self._normalise_file_name(album_path)
 
                 self._ensure_sub_folders_exist(album_path)
 
+                page_file = page.get_file()
+
                 # write to the index.yml file in the index directory of these albums
-                index_file = os.path.join(self._target_dir, os.path.dirname(page.site_path), "index.yml") # page.site_path + '/index.yml'
+                index_file = os.path.join(
+                    self._target_dir,
+                    os.path.dirname(page_file.site_file_path_normalised),
+                    "index.yml") # page.site_path + '/index.yml'
 
                 self._update_index_data_file(file_name=index_file, album=album)
 
@@ -87,13 +92,12 @@ class ExtractionService(ProcessService):
             print("ensure sub folder : {}".format(sub_path))
             self._ensure_directory_exists(path=sub_path)
 
-
     def _update_index_data_file(self, file_name:str, album:Album) -> None:
         # try to read contents
         # update data
         # write data back to file
 
-        key = self._normalise_file_name(album.base_name)
+        key = self._normalise_file_name(album.index_page.base_name)
 
         data = self._read_yaml(path=file_name)
 
@@ -107,7 +111,7 @@ class ExtractionService(ProcessService):
         data['contents'][key]['title'] = album.sub_title
         data['contents'][key]['type'] = 'dir'
         data['contents'][key]['thumb'] = {}
-        data['contents'][key]['thumb']['src'] = album.thumbnail.file_system_path
+        data['contents'][key]['thumb']['src'] = album.thumbnail.file_system_path_normalised
         data['contents'][key]['thumb']['height'] = album.thumbnail_height
         data['contents'][key]['thumb']['width'] = album.thumbnail_width
         data['contents'][key]['thumb']['alt'] = album.thumbnail_alt
