@@ -2,7 +2,7 @@ import re
 
 from bs4 import BeautifulSoup as bs
 
-from site.node.linked_file import LinkedFile
+from site_gen.node.linked_file import LinkedFile
 
 """
     Handles extracting linked resources from a HTML document
