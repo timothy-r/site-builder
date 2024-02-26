@@ -84,3 +84,10 @@ class LinkedFile:
         """
             rename the file paths
         """
+
+    def __repr__(self) -> str:
+        return "LinkedFile(link_path='{}', source_path='{}', parent_path='{}')".format(
+            self._link_path,
+            self._source_path,
+            self._parent_path
+        )
