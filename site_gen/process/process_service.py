@@ -2,10 +2,15 @@ from abc import ABC, abstractmethod
 import os
 
 from site_gen.node.page import Page
-
+"""
+    Implements the processing of a set of linked resources (pages or data)
+"""
 class ProcessService(ABC):
 
     def process(self) -> None:
+
+        self._processed_pages = []
+
         self._process_page(
             source_path=self._root_page,
             site_path='index.html'
@@ -59,3 +64,11 @@ class ProcessService(ABC):
 
         except Exception as e:
             print ("ERROR processing {} : {}".format(source_path, e))
+
+
+    def _ensure_directory_exists(self, path:str) -> None:
+        location = os.path.dirname(path)
+        try:
+            os.makedirs(name=location)
+        except FileExistsError:
+            pass
