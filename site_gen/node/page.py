@@ -10,6 +10,11 @@ from site_gen.node.linked_file import LinkedFile
 class Page:
 
     def __init__(self, source_path:str, html:str, site_path:str) -> None:
+        """
+            source_path: the file system path of this page
+            html: the HTML source of this page
+            site_path: the path to this file on the site it belongs to
+        """
         self._source_path = source_path
         self._html = html
         self._site_path = site_path
@@ -27,7 +32,7 @@ class Page:
 
         for file in self._all_links.values():
             if file.is_html_file and file.exists:
-                results[file.site_file_path] = file.linked_file_path
+                results[file.site_file_path] = file.file_system_path
 
         return results
 
@@ -39,7 +44,7 @@ class Page:
 
         for file in self._all_links.values():
             if file.is_media_file and file.exists:
-                results[file.site_file_path] = file.linked_file_path
+                results[file.site_file_path] = file.file_system_path
         return results
 
     def get_html(self) -> str:
@@ -78,4 +83,4 @@ class Page:
                 self._all_links[base] = LinkedFile(
                     link_path=base,
                     source_path=self._source_path,
-                    site_path=self._site_path)
+                    parent_path=self._site_path)
