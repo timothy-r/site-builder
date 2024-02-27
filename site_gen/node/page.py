@@ -86,10 +86,9 @@ class Page:
 
         # title - from html doc
 
-
     def get_albums(self) -> list[Album]:
         """
-            extract the albums from an index page
+            extract the albums from an album index page
         """
         if not self.is_index_file:
             return []
@@ -97,23 +96,27 @@ class Page:
         dom_doc = bs(self._html, 'html.parser')
 
         albums = []
-        # album exist in a div with class 'gallery-album'
-        for album in dom_doc.find_all(name="div", attrs={'class': 'gallery-album'}):
-            albums.append(self._read_album(album=album))
 
-        # add the leaf page album contents
-        for alt_album in dom_doc.find_all(name='div', attrs={'class':'gallery-thumb'}):
-            albums.append(self.read_leaf_page_album(album=alt_album))
+        # album pages exist in a div with class 'gallery-album' inside a div class 'gallery-albums'
+        album_parent = dom_doc.find(name="div", attrs={'class': 'gallery-albums'})
+
+        if album_parent:
+            for album in album_parent.find_all(name="div", attrs={'class': 'gallery-album'}):
+                albums.append(self._read_album(album=album))
+
+        # leaf page albums exist in a div with class 'gallery-thumb'  inside a div class="gallery-items"
+        leaf_album_parent = dom_doc.find(name='div', attrs={'class':'gallery-items'})
+
+        if leaf_album_parent:
+            for leaf_album in leaf_album_parent.find_all(name='div', attrs={'class':'gallery-thumb'}):
+                albums.append(self.read_leaf_page_album(album=leaf_album))
 
         return albums
 
     def read_leaf_page_album(self, album) -> Album:
-    #       <a href="Pict02.jpg.html">
-    #    <img alt="Boy and girl Eskimo" height="80" src="../../../../d/699-2/Pict02.jpg" width="100"/>
-    #   </a>
-
-        # parts = os.path.split(os.path.dirname(self._site_path))
-        # last_dir = parts[-1]
+        """
+            read albums from a leaf index page
+        """
         album_path = album.find('a').get('href')
 
         thumb_nail = album.find('img')
