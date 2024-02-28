@@ -12,5 +12,11 @@
 
 * pages are either indexes (parents) or leaf pages
 
-* use the page & linkedFile classes
-    * get linked file to rename itself & use that when writing the data yaml files
+[] Consider updating Page class
+(changes the process classes)
+    [] to read it's own html
+    [] get_pages() returns Page objects
+    [] get_files() returns LinkedFile objects
+    [] construct with a LinkedFile object?
+
+[] Refactor duplicated _copy_file methods

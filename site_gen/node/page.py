@@ -8,7 +8,7 @@ from site_gen.node.linked_file import LinkedFile
 from site_gen.node.album import Album
 
 """
-    Handles extracting linked resources from a HTML document
+    Handles extracting resources from a HTML document
 """
 class Page:
 
@@ -35,7 +35,9 @@ class Page:
         return self._site_path
 
     def get_file(self) -> LinkedFile:
-        return LinkedFile(link_path=self._site_path, system_path=self._system_path, host_page_path='')
+        return self._get_linked_file(link_path='')
+
+        # return LinkedFile(link_path=self._site_path, system_path=self._system_path, host_page_path='')
 
     def get_pages(self) -> dict:
         """
@@ -130,16 +132,10 @@ class Page:
         album_path = os.path.join(last_dir, album_path)
 
         return Album(
-            index_page = LinkedFile(
-                link_path=album_path,
-                system_path=self._system_path,
-                host_page_path=self._site_path),
+            index_page = self._get_linked_file(link_path=album_path),
             title = title,
             sub_title = title,
-            thumbnail = LinkedFile(
-                link_path=thumb_nail.get('src'),
-                system_path=self._system_path,
-                host_page_path=self._site_path),
+            thumbnail= self._get_linked_file(link_path=thumb_nail.get('src')),
             thumbnail_alt = thumb_nail.get('alt'),
             thumbnail_height = int(thumb_nail.get('height')),
             thumbnail_width = int(thumb_nail.get('width'))
@@ -157,19 +153,25 @@ class Page:
         thumb_nail = album.find('img')
 
         return Album(
-            index_page = LinkedFile(
-                link_path=album_path,
-                system_path=self._system_path,
-                host_page_path=self._site_path),
+            index_page = self._get_linked_file(link_path=album_path),
+
             title = title,
             sub_title = sub_title,
-            thumbnail = LinkedFile(
-                link_path=thumb_nail.get('src'),
-                system_path=self._system_path,
-                host_page_path=self._site_path),
+            thumbnail =  self._get_linked_file(link_path=thumb_nail.get('src')),
+
             thumbnail_alt = thumb_nail.get('alt'),
             thumbnail_height = int(thumb_nail.get('height')),
             thumbnail_width = int(thumb_nail.get('width'))
+        )
+
+    def _get_linked_file(self, link_path:str) -> LinkedFile:
+        """
+            return a file from an embeded link in this page's HTML
+        """
+        return LinkedFile(
+            link_path=link_path,
+            system_path=self._system_path,
+            host_page_path=self._site_path
         )
 
     @property
@@ -196,7 +198,4 @@ class Page:
             if item:
                 base = item.split('@')[0]
 
-                self._all_links[base] = LinkedFile(
-                    link_path=base,
-                    system_path=self._system_path,
-                    host_page_path=self._site_path)
+                self._all_links[base] = self._get_linked_file(link_path=base)
