@@ -1,8 +1,9 @@
 #!/bin/bash
 
 # Available actions are : clean, extract, build
-ACTION=clean
+ACTION=extract
 ROOT=$1
-TARGET=target
+TARGET=new_site
 
 python3 -m site_gen $ACTION $ROOT $TARGET
+

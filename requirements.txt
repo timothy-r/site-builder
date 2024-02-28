@@ -7,6 +7,7 @@ importlib-metadata==7.0.1
 lxml==5.1.0
 mockfs==2.0.0
 pyquery==2.0.0
+PyYAML==6.0.1
 requests==2.31.0
 soupsieve==2.5
 urllib3==2.2.1
