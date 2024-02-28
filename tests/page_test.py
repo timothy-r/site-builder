@@ -19,7 +19,7 @@ class PageTest(unittest.TestCase):
 
     def test_get_albums(self) -> None:
         album_count = 1
-        html = self._get_index_html(albums=album_count)
+        html = self._get_album_index_html(albums=album_count)
         page = Page(system_path='/opt/test/source/index.html', html=html, site_path='index.html')
 
         albums = page.get_albums()
@@ -34,14 +34,16 @@ class PageTest(unittest.TestCase):
 
         self.assertEqual(album_count, len(albums))
 
-    # def test_get_mixed_albums(self) -> None:
-    #     album_count = 4
-    #     html = self._get_mixed_index_html(albums=album_count)
+    def test_get_mixed_albums(self) -> None:
+        album_count = 4
+        leaf_albums = 1
 
-    #     page = Page(system_path='/opt/test/source/graphics/index.html', html=html, site_path='graphics/index.html')
-    #     albums = page.get_albums()
+        html = self._get_mixed_index_html(albums=album_count, leaf_albums=leaf_albums)
 
-    #     self.assertEqual(album_count, len(albums))
+        page = Page(system_path='/opt/test/source/graphics/index.html', html=html, site_path='graphics/index.html')
+        albums = page.get_albums()
+
+        self.assertEqual(album_count+leaf_albums, len(albums))
 
 
     def test_get_albums_from_non_index_page(self) -> None:
@@ -52,7 +54,7 @@ class PageTest(unittest.TestCase):
         self.assertEqual(album_count, len(albums))
 
 
-    def _get_index_html(self, albums=4) -> str:
+    def _get_album_index_html(self, albums=4) -> str:
 
         html = '<html>'
         html += '<body class="gallery">'
@@ -119,7 +121,18 @@ class PageTest(unittest.TestCase):
             html += '<p>Album {}</p>'.format(a)
             html += '</div>'
 
+        html += '</div>'
+
+        html += '<div class="gallery-items">'
+
+        for leaf in range(0, leaf_albums):
+            html += '<div class="gallery-thumb">'
+            html += '<a href="v/album_{}/index.html">'.format(leaf)
+            html += '<img alt="Album {}" height="80" src="d/123{}/thumbnail.png" width="100"/>'.format(leaf, leaf)
+            html += '</a></div>'
+
         html += '</div></div></div>'
         html += '</body></html>'
 
         dom_doc = BeautifulSoup(html, 'html.parser')
+        return dom_doc.prettify()
