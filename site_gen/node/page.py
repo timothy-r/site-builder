@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup as bs
 
 from site_gen.node.linked_file import LinkedFile
 from site_gen.node.album import Album
-
+from site_gen.node.page_content import PageContent
 """
     Handles extracting resources from a HTML document
 """
@@ -86,9 +86,32 @@ class Page:
         if self.is_index_file:
             return
 
-        # title - from html doc
+        dom_doc = bs(self._html, 'html.parser')
+        content_div = dom_doc.find(name="div", attrs={'class': 'content'})
+
+        # title - from html doc: h2 tag
+        title = content_div.find('h2').text.strip()
+
+        photo_div = dom_doc.find(name="div", attrs={'class': 'gallery-photo'})
+        photo_img = photo_div.find(name='img', attrs={'class': 'gallery-photo'}).get('src')
+
+        download_img = ''
+
+        for p_tag in dom_doc.find_all('p'):
+            anchor_tag = p_tag.find('a')
+            if anchor_tag:
+                text = anchor_tag.text.strip()
+                if re.match('Download photo', string=text):
+                    download_img = anchor_tag.get('href')
+                    break
+
+
         # src - LinkedFile
-        # thumb - LinkedFile
+        # download_file - LinkedFile
+        return PageContent(
+            title=title,
+            source=self._get_linked_file(link_path=photo_img),
+            download_file=self._get_linked_file(link_path=download_img))
 
     def get_albums(self) -> list[Album]:
         """
