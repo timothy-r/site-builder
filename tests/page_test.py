@@ -45,14 +45,12 @@ class PageTest(unittest.TestCase):
 
         self.assertEqual(album_count+leaf_albums, len(albums))
 
-
     def test_get_albums_from_non_index_page(self) -> None:
         album_count = 0
         page = Page(system_path='/opt/test/source/page.html', html='', site_path='page.html')
 
         albums = page.get_albums()
         self.assertEqual(album_count, len(albums))
-
 
     def _get_album_index_html(self, albums=4) -> str:
 

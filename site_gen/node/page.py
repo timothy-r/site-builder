@@ -85,6 +85,8 @@ class Page:
             return
 
         # title - from html doc
+        # src - LinkedFile
+        # thumb - LinkedFile
 
     def get_albums(self) -> list[Album]:
         """
