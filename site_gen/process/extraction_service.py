@@ -5,6 +5,7 @@ import shutil
 
 from site_gen.node.page import Page
 from site_gen.node.album import Album
+from site_gen.file.yaml_file import YAMLFile
 
 from site_gen.process.process_service import ProcessService
 
@@ -105,7 +106,10 @@ class ExtractionService(ProcessService):
 
         key = album.index_page.base_name_normalised
 
-        data = self._read_yaml(path=file_name)
+        yaml_file = YAMLFile(path=file_name)
+        data = yaml_file.read()
+
+        # data = self._read_yaml(path=file_name)
 
         if not 'contents' in data:
             data['contents'] = {}
@@ -122,7 +126,8 @@ class ExtractionService(ProcessService):
         data['contents'][key]['thumb']['width'] = album.thumbnail_width
         data['contents'][key]['thumb']['alt'] = album.thumbnail_alt
 
-        self._write_yaml(path=file_name, data=data)
+        yaml_file.write(data=data)
+        # self._write_yaml(path=file_name, data=data)
 
     def _copy_thumbnail(self, album:Album, target_path:str) -> None:
         print("copy thumbnail file {}".format(target_path))
@@ -133,17 +138,17 @@ class ExtractionService(ProcessService):
             # print("Copy file from {} to {}".format(source_path, target_path))
             shutil.copy(album.thumbnail.file_system_path, target_path)
 
-    def _read_yaml(self, path:str) -> dict:
-        """
-            read yaml file at path
-        """
-        if os.path.exists(path=path):
-            with open(path, 'r') as file:
-                data = yaml.safe_load(file)
-                return data
-        else:
-            return {}
+    # def _read_yaml(self, path:str) -> dict:
+    #     """
+    #         read yaml file at path
+    #     """
+    #     if os.path.exists(path=path):
+    #         with open(path, 'r') as file:
+    #             data = yaml.safe_load(file)
+    #             return data
+    #     else:
+    #         return {}
 
-    def _write_yaml(self, path:str, data:dict) -> None:
-        with open(path, 'w') as file:
-            file.write(yaml.safe_dump(data=data))
+    # def _write_yaml(self, path:str, data:dict) -> None:
+    #     with open(path, 'w') as file:
+    #         file.write(yaml.safe_dump(data=data))

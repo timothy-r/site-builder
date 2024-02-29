@@ -67,7 +67,7 @@ class Page:
             respond with the html with href rewritten
             keep the original html doc intact
         """
-        dom_doc = bs(self._html, 'html.parser')
+        dom_doc = bs(markup=self._html, features='html.parser')
 
         all_a_tags = dom_doc.find_all("a")
         for tag in all_a_tags:
@@ -86,7 +86,7 @@ class Page:
         if self.is_index_file:
             return
 
-        dom_doc = bs(self._html, 'html.parser')
+        dom_doc = bs(markup=self._html, features='html.parser')
         content_div = dom_doc.find(name="div", attrs={'class': 'content'})
 
         # title - from html doc: h2 tag
@@ -120,7 +120,7 @@ class Page:
         if not self.is_index_file:
             return []
 
-        dom_doc = bs(self._html, 'html.parser')
+        dom_doc = bs(markup=self._html, features='html.parser')
 
         albums = []
 
@@ -206,7 +206,7 @@ class Page:
 
 
     def _extract_contents(self) -> None:
-        dom_doc = bs(self._html, 'html.parser')
+        dom_doc = bs(markup=self._html, features='html.parser')
 
         self._gather_all_tags(dom_doc=dom_doc, tag_name='a', attr='href')
         self._gather_all_tags(dom_doc=dom_doc, tag_name='link', attr='href')
