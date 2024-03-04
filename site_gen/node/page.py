@@ -47,7 +47,7 @@ class Page:
 
         for file in self._all_links.values():
             if file.is_html_file and file.exists:
-                results[file.site_file_path] = file.file_system_path
+                results[file.host_page_path_normalised] = file.file_system_path
 
         return results
 
@@ -59,7 +59,7 @@ class Page:
 
         for file in self._all_links.values():
             if file.is_media_file and file.exists:
-                results[file.site_file_path] = file.file_system_path
+                results[file.host_page_path_normalised] = file.file_system_path
         return results
 
     def get_html(self) -> str:

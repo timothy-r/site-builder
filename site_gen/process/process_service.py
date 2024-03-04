@@ -43,7 +43,7 @@ class ProcessService(ABC):
             """
             return
 
-        print("ExtractionService: Processing page {}".format(source_path))
+        print("\n{}: Processing page {}".format(__class__.__name__, source_path))
 
         try:
 
@@ -69,7 +69,7 @@ class ProcessService(ABC):
                     self._process_page(source_path=pages[key], site_path=key)
 
         except Exception as e:
-            print ("ERROR processing {} : {}".format(source_path, e))
+            print ("ERROR {} processing {} : {}".format(__class__.__name__, source_path, e))
 
 
     def _ensure_directory_exists(self, path:str) -> None:

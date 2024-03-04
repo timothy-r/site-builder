@@ -81,15 +81,15 @@ class LinkedFile:
         return self._normalise_string(self.file_system_path)
 
     @property
-    def site_file_path(self) -> str:
+    def host_page_path(self) -> str:
 
         site_location = os.path.dirname(self._host_page_path)
         return os.path.normpath(os.path.join(site_location, self._link_path))
 
     @property
-    def site_file_path_normalised(self) -> str:
+    def host_page_path_normalised(self) -> str:
         # site_file_path
-        return self._normalise_string(self.site_file_path)
+        return self._normalise_string(self.host_page_path)
 
     @property
     def base_name(self) -> str:
