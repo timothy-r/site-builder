@@ -1,4 +1,6 @@
 import os
+import logging
+
 # import re
 import yaml
 import shutil
@@ -82,7 +84,7 @@ class ExtractionService(ProcessService):
             pass
             content = page.get_content()
 
-            # print("Processing content page {}".format(page))
+            logging.info("Processing content page {}".format(page))
 
     def _ensure_sub_folders_exist(self, path:str) -> None:
         """
