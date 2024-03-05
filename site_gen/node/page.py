@@ -88,33 +88,59 @@ class Page:
 
         dom_doc = bs(markup=self._html, features='html.parser')
 
-        title = dom_doc.find(name='title').text.strip()
+        title_element = dom_doc.find(name='title')
+        if not title_element:
+            return
 
-        # content_div = dom_doc.find(name="div", attrs={'class': 'content'})
+        title = title_element.text.strip()
 
-        # title - from html doc: h2 tag
-        # title = content_div.find('h2').text.strip()
+        source_file = self._get_image_content(dom_doc=dom_doc)
 
-        photo_div = dom_doc.find(name="div", attrs={'class': 'gallery-photo'})
-        photo_img = photo_div.find(name='img', attrs={'class': 'gallery-photo'}).get('src')
+        if source_file:
+            download_image = self._get_download_image(dom_doc=dom_doc)
+        else:
+            source_file = self._get_flash_content(dom_doc=dom_doc)
+            download_image = None
 
-        download_img = ''
+        if not source_file:
+            return
 
-        for p_tag in dom_doc.find_all('p'):
-            anchor_tag = p_tag.find('a')
-            if anchor_tag:
-                text = anchor_tag.text.strip()
-                if re.match('Download photo', string=text):
-                    download_img = anchor_tag.get('href')
-                    break
-
+        if download_image:
+            download_file = self._get_linked_file(link_path=download_image)
+        else:
+            download_file = None
 
         # src - LinkedFile
         # download_file - LinkedFile
         return PageContent(
             title=title,
-            source=self._get_linked_file(link_path=photo_img),
-            download_file=self._get_linked_file(link_path=download_img))
+            source=self._get_linked_file(link_path=source_file),
+            download_file=download_file
+        )
+
+    def _get_download_image(self, dom_doc:bs) -> str:
+        for p_tag in dom_doc.find_all('p'):
+            anchor_tag = p_tag.find('a')
+            if anchor_tag:
+                text = anchor_tag.text.strip()
+                if re.match('Download photo', string=text):
+                    return anchor_tag.get('href')
+
+        return None
+
+    def _get_image_content(self, dom_doc:bs) -> str:
+        photo_div = dom_doc.find(name="div", attrs={'class': 'gallery-photo'})
+        if photo_div:
+            return photo_div.find(name='img', attrs={'class': 'gallery-photo'}).get('src')
+        else:
+            return None
+
+    def _get_flash_content(self, dom_doc:bs) -> str:
+        flash_div = dom_doc.find(name='div', attrs={'id': 'flashContent'})
+        if flash_div:
+            return flash_div.find(name='object', attrs={'type':'application/x-shockwave-flash'}).get('data')
+        else:
+            return None
 
     def get_albums(self) -> list[Album]:
         """
@@ -194,6 +220,7 @@ class Page:
         """
             return a file from an embeded link in this page's HTML
         """
+
         return LinkedFile(
             link_path=link_path,
             system_path=self._system_path,

@@ -53,7 +53,27 @@ class PageTest(unittest.TestCase):
         albums = page.get_albums()
         self.assertEqual(album_count, len(albums))
 
-    def test_get_content(self) -> None:
+    def test_get_page_content_from_index_page(self) -> None:
+        page = Page(system_path='/opt/test/source/index.html', html='', site_path='index.html')
+
+        content = page.get_content()
+        self.assertIsNone(content)
+
+    def test_get_page_content_from_empty_page(self) -> None:
+        page = Page(system_path='/opt/test/source/content-page.html', html='', site_path='parent.html')
+
+        content = page.get_content()
+        self.assertIsNone(content)
+
+    def test_get_page_content_from_page_without_content(self) -> None:
+
+        html = '<html><head><title>Page</title></head><body><p>Some other content</p></body></html>'
+        page = Page(system_path='/opt/test/source/content-page.html', html=html, site_path='parent.html')
+
+        content = page.get_content()
+        self.assertIsNone(content)
+
+    def test_get_image_content(self) -> None:
 
         title = 'content test'
         img = 'test.01.png'
@@ -61,10 +81,24 @@ class PageTest(unittest.TestCase):
         html = self._get_content_page(title=title, image=img, download_img=download_img)
         page = Page(system_path='/opt/test/source/page.html', html=html, site_path='page.html')
         content = page.get_content()
+
         self.assertIsInstance(content, PageContent)
         self.assertEqual(title, content.title)
         self.assertEqual(img, content.source.file_name_normalised)
         self.assertEqual(download_img, content.download_file.file_name_normalised)
+
+    def test_get_flash_content(self) -> None:
+        title = 'flash page'
+        flash_file = 'test.flash.swf'
+        html = self._get_flash_page(title=title, flash_file=flash_file)
+
+        page = Page(system_path='/opt/test/source/flash-page.html', html=html, site_path='page.html')
+        content = page.get_content()
+
+        self.assertIsInstance(content, PageContent)
+        self.assertEqual(title, content.title)
+        self.assertEqual(flash_file, content.source.file_name_normalised)
+        self.assertEqual(None, content.download_file)
 
     def _wrap_content_in_page_html(self, title:str='Test Page', content:str='') -> str:
         html = '<html>'
@@ -131,6 +165,44 @@ class PageTest(unittest.TestCase):
         html += '<p><a href="../../../../d/698-2/{}">Download photo(1160x928)</a></p>'.format(download_img)
 
         html = self._wrap_content_in_page_html(content=html, title=title)
+
+        dom_doc = BeautifulSoup(html, 'html.parser')
+        return dom_doc.prettify()
+
+    def _get_flash_page(self, title:str, flash_file:str) -> str:
+        html = '<html>'
+        html += '<head><title>{}</title></head>'.format(title)
+        html += '<body>'
+
+        html += '<div id="flashContent">'
+        html += '<object align="middle" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" height="620" id="scene47" width="1024">'
+        html += '<param name="movie" value="scene47.swf"/>'
+        html += '<param name="quality" value="high"/>'
+        html += '<param name="bgcolor" value="#ffffff"/>'
+        html += '<param name="play" value="true"/>'
+        html += '<param name="loop" value="true"/>'
+        html += '<param name="wmode" value="window"/>'
+        html += '<param name="scale" value="showall"/>'
+        html += '<param name="menu" value="true"/>'
+        html += '<param name="devicefont" value="false"/>'
+        html += '<param name="salign" value=""/>'
+        html += '<param name="allowScriptAccess" value="sameDomain"/>'
+
+        html += '<object data="{}" height="620" type="application/x-shockwave-flash" width="1024">'.format(flash_file)
+        html += '<param name="movie" value="scene47.swf"/>'
+        html += '<param name="quality" value="high"/>'
+        html += '<param name="bgcolor" value="#ffffff"/>'
+        html += '<param name="play" value="true"/>'
+        html += '<param name="loop" value="true"/>'
+        html += '<param name="wmode" value="window"/>'
+        html += '<param name="scale" value="showall"/>'
+        html += '<param name="menu" value="true"/>'
+        html += '<param name="devicefont" value="false"/>'
+        html += '<param name="salign" value=""/>'
+        html += '<param name="allowScriptAccess" value="sameDomain"/>'
+
+        html += '</object></object></div>'
+        html += '</body></html>'
 
         dom_doc = BeautifulSoup(html, 'html.parser')
         return dom_doc.prettify()

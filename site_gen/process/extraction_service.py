@@ -53,6 +53,7 @@ class ExtractionService(ProcessService):
                 self._ensure_sub_folders_exist(album_path)
 
                 page_file = page.get_file()
+
                 logging.info("{}: Processing album: page_file = {}".format(__class__.__name__, page_file))
                 # write to the index.yml file in the index directory of these albums
                 index_file = os.path.join(
