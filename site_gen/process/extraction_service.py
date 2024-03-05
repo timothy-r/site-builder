@@ -141,18 +141,3 @@ class ExtractionService(ProcessService):
         if not os.path.exists(target_path):
             # print("Copy file from {} to {}".format(source_path, target_path))
             shutil.copy(album.thumbnail.file_system_path, target_path)
-
-    # def _read_yaml(self, path:str) -> dict:
-    #     """
-    #         read yaml file at path
-    #     """
-    #     if os.path.exists(path=path):
-    #         with open(path, 'r') as file:
-    #             data = yaml.safe_load(file)
-    #             return data
-    #     else:
-    #         return {}
-
-    # def _write_yaml(self, path:str, data:dict) -> None:
-    #     with open(path, 'w') as file:
-    #         file.write(yaml.safe_dump(data=data))
