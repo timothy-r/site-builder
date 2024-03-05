@@ -35,7 +35,7 @@ if __name__ == "__main__":
         level=logging.DEBUG,
         filename='site-builder.log',
         filemode='a',
-        format='%(name)s - %(levelname)s - %(message)s'
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     )
 
 

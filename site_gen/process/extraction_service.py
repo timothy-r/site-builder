@@ -2,7 +2,7 @@ import os
 import logging
 
 # import re
-import yaml
+# import yaml
 import shutil
 
 from site_gen.node.page import Page
@@ -23,7 +23,7 @@ class ExtractionService(ProcessService):
 
     def _do_page_processing(self, page:Page) -> None:
 
-        print("{} _do_page_processing {}".format(__class__.__name__, page))
+        logging.info("{} _do_page_processing {}".format(__class__.__name__, page))
 
         """
         switch behaviour on type of page
@@ -39,12 +39,12 @@ class ExtractionService(ProcessService):
             move source files
         """
         if page.is_index_file:
-            print("{}: Processing index page {}".format(__class__.__name__, page))
+            logging.info("{}: Processing index page {}".format(__class__.__name__, page))
 
             # albums = page.get_albums()
 
             for album in page.get_albums():
-                print("{}: Processing album: {}".format(__class__.__name__, album.index_page.file_system_path))
+                logging.info("{}: Processing album: {}".format(__class__.__name__, album.index_page.file_system_path))
 
                 album_path = os.path.join(
                     self._target_dir,
@@ -53,7 +53,7 @@ class ExtractionService(ProcessService):
                 self._ensure_sub_folders_exist(album_path)
 
                 page_file = page.get_file()
-                print("{}: Processing album: page_file = {}".format(__class__.__name__, page_file))
+                logging.info("{}: Processing album: page_file = {}".format(__class__.__name__, page_file))
                 # write to the index.yml file in the index directory of these albums
                 index_file = os.path.join(
                     self._target_dir,
@@ -95,17 +95,17 @@ class ExtractionService(ProcessService):
             'thumbs'
 
         """
-        # print("ensure folder : {}".format(path))
+        # logging.info("ensure folder : {}".format(path))
 
         self._ensure_directory_exists(path=path)
 
         for dir in ['images', 'thumbs']:
             sub_path = os.path.join(path, dir)
-            # print("ensure sub folder : {}".format(sub_path))
+            # logging.info("ensure sub folder : {}".format(sub_path))
             self._ensure_directory_exists(path=sub_path)
 
     def _update_index_data_file(self, file_name:str, album:Album, thumbnail_path:str) -> None:
-        print("{} _update_index_data_file {}".format(__class__.__name__, file_name))
+        logging.info("{} _update_index_data_file {}".format(__class__.__name__, file_name))
         # try to read contents
         # update data
         # write data back to file
@@ -136,10 +136,10 @@ class ExtractionService(ProcessService):
         # self._write_yaml(path=file_name, data=data)
 
     def _copy_thumbnail(self, album:Album, target_path:str) -> None:
-        print("copy thumbnail file {}".format(target_path))
+        logging.info("copy thumbnail file {}".format(target_path))
 
         self._ensure_directory_exists(path=target_path)
 
         if not os.path.exists(target_path):
-            # print("Copy file from {} to {}".format(source_path, target_path))
+            # logging.info("Copy file from {} to {}".format(source_path, target_path))
             shutil.copy(album.thumbnail.file_system_path, target_path)

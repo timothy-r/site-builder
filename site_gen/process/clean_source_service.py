@@ -1,5 +1,6 @@
 import os
 import shutil
+import logging
 
 from site_gen.node.page import Page
 from site_gen.process.process_service import ProcessService
@@ -26,7 +27,7 @@ class CleanSourceService(ProcessService):
         self._ensure_directory_exists(path=target_path)
 
         if not os.path.exists(target_path):
-            print("Write html page {}".format(target_path))
+            logging.info("Write html page {}".format(target_path))
             with open(target_path, mode='w', encoding='utf-8') as f:
                 f.write(page.get_html())
 
@@ -38,7 +39,7 @@ class CleanSourceService(ProcessService):
         self._ensure_directory_exists(path=target_path)
 
         if not os.path.exists(target_path):
-            # print("Copy file from {} to {}".format(source_path, target_path))
+            # logging.info("Copy file from {} to {}".format(source_path, target_path))
             shutil.copy(source_path, target_path)
 
 

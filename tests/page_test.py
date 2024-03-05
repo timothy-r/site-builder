@@ -68,6 +68,7 @@ class PageTest(unittest.TestCase):
 
     def _wrap_content_in_page_html(self, title:str='Test Page', content:str='') -> str:
         html = '<html>'
+        html += '<head><title>{}</title></head>'.format(title)
         html += '<body class="gallery">'
         html += '<div id="gallery">'
         html += '<div class="content">'

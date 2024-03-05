@@ -79,7 +79,7 @@ class Page:
 
         return dom_doc.prettify()
 
-    def get_content(self):
+    def get_content(self) -> PageContent|None:
         """
             extract the contents of a leaf page
         """
@@ -87,10 +87,13 @@ class Page:
             return
 
         dom_doc = bs(markup=self._html, features='html.parser')
-        content_div = dom_doc.find(name="div", attrs={'class': 'content'})
+
+        title = dom_doc.find(name='title').text.strip()
+
+        # content_div = dom_doc.find(name="div", attrs={'class': 'content'})
 
         # title - from html doc: h2 tag
-        title = content_div.find('h2').text.strip()
+        # title = content_div.find('h2').text.strip()
 
         photo_div = dom_doc.find(name="div", attrs={'class': 'gallery-photo'})
         photo_img = photo_div.find(name='img', attrs={'class': 'gallery-photo'}).get('src')
