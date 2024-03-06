@@ -41,8 +41,6 @@ class ExtractionService(ProcessService):
         if page.is_index_file:
             logging.info("{}: Processing index page {}".format(__class__.__name__, page))
 
-            # albums = page.get_albums()
-
             for album in page.get_albums():
                 logging.info("{}: Processing album: {}".format(__class__.__name__, album.index_page.file_system_path))
 
@@ -83,7 +81,11 @@ class ExtractionService(ProcessService):
                 self._copy_thumbnail(album=album, target_path=thumbnail_target_path)
         else:
             pass
+            # extract contents
             content = page.get_content()
+            # update index file
+
+            # copy image / other content files
 
             logging.info("Processing content page {}".format(page))
 
@@ -116,8 +118,6 @@ class ExtractionService(ProcessService):
         yaml_file = YAMLFile(path=file_name)
         data = yaml_file.read()
 
-        # data = self._read_yaml(path=file_name)
-
         if not 'contents' in data:
             data['contents'] = {}
 
@@ -134,7 +134,6 @@ class ExtractionService(ProcessService):
         data['contents'][key]['thumb']['alt'] = album.thumbnail_alt
 
         yaml_file.write(data=data)
-        # self._write_yaml(path=file_name, data=data)
 
     def _copy_thumbnail(self, album:Album, target_path:str) -> None:
         logging.info("copy thumbnail file {}".format(target_path))
