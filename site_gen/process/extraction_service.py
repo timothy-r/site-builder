@@ -17,9 +17,6 @@ from site_gen.process.process_service import ProcessService
 """
 class ExtractionService(ProcessService):
 
-    # def __init__(self, root_page:str, target_dir:str) -> None:
-    #     super().__init__(root_page=root_page, target_dir=target_dir)
-
     def _do_page_processing(self, page:Page) -> None:
 
         logging.info("{} _do_page_processing {}".format(__class__.__name__, page))
