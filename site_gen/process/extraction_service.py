@@ -17,9 +17,8 @@ from site_gen.process.process_service import ProcessService
 """
 class ExtractionService(ProcessService):
 
-    def __init__(self, root_page:str, target_dir:str) -> None:
-        super().__init__(root_page=root_page, target_dir=target_dir)
-
+    # def __init__(self, root_page:str, target_dir:str) -> None:
+    #     super().__init__(root_page=root_page, target_dir=target_dir)
 
     def _do_page_processing(self, page:Page) -> None:
 
@@ -38,7 +37,16 @@ class ExtractionService(ProcessService):
             update index.yml
             move source files
         """
+        page_file = page.get_file()
+
+        # write to the index.yml file in the index directory of these albums
+        index_file = os.path.join(
+            self._target_dir,
+            page_file.host_page_path_normalised,
+            "index.yml")
+
         if page.is_index_file:
+
             logging.info("{}: Processing index page {}".format(__class__.__name__, page))
 
             for album in page.get_albums():
@@ -50,20 +58,14 @@ class ExtractionService(ProcessService):
 
                 self._ensure_sub_folders_exist(album_path)
 
-                page_file = page.get_file()
-
                 logging.info("{}: Processing album: page_file = {}".format(__class__.__name__, page_file))
-                # write to the index.yml file in the index directory of these albums
-                index_file = os.path.join(
-                    self._target_dir,
-                    page_file.host_page_path_normalised,
-                    "index.yml") # page.site_path + '/index.yml'
 
                 thumbnail_data_path = os.path.join(
                     page_file.host_page_path_normalised,
                     'thumbs',
                     album.thumbnail.file_name_normalised
                 )
+
                 self._update_index_data_file(
                     file_name=index_file,
                     album=album,
@@ -73,9 +75,7 @@ class ExtractionService(ProcessService):
                 # copy thumbnail files to the target location
                 thumbnail_target_path = os.path.join(
                     self._target_dir,
-                    page_file.host_page_path_normalised,
-                    'thumbs',
-                    album.thumbnail.file_name_normalised
+                    thumbnail_data_path
                 )
 
                 self._copy_thumbnail(album=album, target_path=thumbnail_target_path)
@@ -83,7 +83,8 @@ class ExtractionService(ProcessService):
             pass
             # extract contents
             content = page.get_content()
-            # update index file
+
+            # # update index file
 
             # copy image / other content files
 
@@ -108,6 +109,7 @@ class ExtractionService(ProcessService):
             self._ensure_directory_exists(path=sub_path)
 
     def _update_index_data_file(self, file_name:str, album:Album, thumbnail_path:str) -> None:
+
         logging.info("{} _update_index_data_file {}".format(__class__.__name__, file_name))
         # try to read contents
         # update data
