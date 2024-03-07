@@ -1,6 +1,6 @@
 from enum import Enum
 
-class AlbumType(Enum):
+class NodeType(Enum):
 
     """
         A directory album contains other directories

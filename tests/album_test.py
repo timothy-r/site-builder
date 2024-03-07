@@ -2,7 +2,7 @@ import unittest
 
 
 from site_gen.node.album import Album
-from site_gen.node.album_type import AlbumType
+from site_gen.node.album_type import NodeType
 from site_gen.node.linked_file import LinkedFile
 
 class AlbumTest(unittest.TestCase):
@@ -15,7 +15,7 @@ class AlbumTest(unittest.TestCase):
         album = Album(
             index_page=page,
             title=title,
-            type=AlbumType.DIRECTORY,
+            type=NodeType.DIRECTORY,
             thumbnail=thumbnail,
             thumbnail_height=100,
             thumbnail_width=100
