@@ -2,7 +2,7 @@ import unittest
 
 
 from site_gen.node.album import Album
-from site_gen.node.album_type import NodeType
+from site_gen.node.node_type import NodeType
 from site_gen.node.linked_file import LinkedFile
 
 class AlbumTest(unittest.TestCase):

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from site_gen.node.linked_file import LinkedFile
-from site_gen.node.album_type import NodeType
+from site_gen.node.node_type import NodeType
 
 @dataclass(frozen=True)
 class Album():
