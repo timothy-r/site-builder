@@ -53,7 +53,7 @@ class ExtractionService(ProcessService):
                     self._target_dir,
                     os.path.dirname(album.index_page.host_page_path_normalised))
 
-                self._ensure_sub_folders_exist(album_path)
+                # self._ensure_sub_folders_exist(album_path)
 
                 logging.info("{}: Processing album: page_file = {}".format(__class__.__name__, page_file))
 
@@ -107,6 +107,8 @@ class ExtractionService(ProcessService):
 
     def _update_index_data_file(self, file_name:str, album:Album, thumbnail_path:str) -> None:
 
+        self._ensure_directory_exists(path=file_name)
+
         logging.info("{} _update_index_data_file {}".format(__class__.__name__, file_name))
         # try to read contents
         # update data
@@ -125,7 +127,7 @@ class ExtractionService(ProcessService):
 
         data['contents'][key]['title'] = album.title
         data['contents'][key]['sub_title'] = album.sub_title
-        data['contents'][key]['type'] = 'dir'
+        data['contents'][key]['type'] = album.type.name
         data['contents'][key]['thumb'] = {}
         data['contents'][key]['thumb']['src'] = thumbnail_path
         data['contents'][key]['thumb']['height'] = album.thumbnail_height

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 EXTRACT_DIR=target
-NEW_SITE_DIR=site_data
+NEW_SITE_DIR=build_data
 
 rm *.log
 rm -r $EXTRACT_DIR

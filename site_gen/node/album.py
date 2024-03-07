@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from site_gen.node.linked_file import LinkedFile
+from site_gen.node.album_type import AlbumType
 
 @dataclass(frozen=True)
 class Album():
@@ -17,11 +18,14 @@ class Album():
     """
     index_page:LinkedFile
     title:str
+    type:AlbumType
     thumbnail:LinkedFile
     thumbnail_width:int
     thumbnail_height:int
     thumbnail_alt:str = None
     sub_title:str = None
+
+
 
     # def rename_file_paths(self) -> None:
     #     self.index_page.rename_paths()

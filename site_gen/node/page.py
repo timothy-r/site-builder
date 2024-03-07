@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup as bs
 
 from site_gen.node.linked_file import LinkedFile
 from site_gen.node.album import Album
+from site_gen.node.album_type import AlbumType
+
 from site_gen.node.page_content import PageContent
 """
     Handles extracting resources from a HTML document
@@ -187,6 +189,7 @@ class Page:
             index_page = self._get_linked_file(link_path=album_path),
             title = title,
             sub_title = title,
+            type=AlbumType.PAGE,
             thumbnail= self._get_linked_file(link_path=thumb_nail.get('src')),
             thumbnail_alt = thumb_nail.get('alt'),
             thumbnail_height = int(thumb_nail.get('height')),
@@ -209,6 +212,7 @@ class Page:
 
             title = title,
             sub_title = sub_title,
+            type=AlbumType.DIRECTORY,
             thumbnail =  self._get_linked_file(link_path=thumb_nail.get('src')),
 
             thumbnail_alt = thumb_nail.get('alt'),
