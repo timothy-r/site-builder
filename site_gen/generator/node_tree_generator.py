@@ -1,3 +1,5 @@
+from typing import Callable
+
 from site_gen.node.node import Node
 
 """
@@ -5,11 +7,13 @@ from site_gen.node.node import Node
 """
 class NodeTreeGenerator:
 
-    def __init__(self) -> None:
-        pass
+    def __init__(self, node_factory:Callable) -> None:
+        self._node_factory = node_factory
 
     def generate(self, source_file:str) -> Node:
-        pass
+        node = self._node_factory(source_file)
+
+        return node
 
     def _process_node(self, node:Node) -> None:
         pass

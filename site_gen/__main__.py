@@ -13,6 +13,8 @@ def main(args):
     file = args[2]
     target = args[3]
 
+    logging.info("Running action:{} file:{} target:{}".format(action, file, target))
+
     if 'clean' == action:
         service = CleanSourceService(root_page=file, target_dir=target)
 
@@ -21,7 +23,7 @@ def main(args):
         pass
 
     elif 'build' == action:
-        pass
+        return
 
     service.process()
 
