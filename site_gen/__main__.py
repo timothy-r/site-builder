@@ -1,6 +1,7 @@
 import sys
 import logging
 
+from site_gen.container import Container
 from site_gen.node.page import Page
 from site_gen.process.clean_source_service import CleanSourceService
 from site_gen.process.extraction_service import ExtractionService
@@ -26,9 +27,9 @@ def main(args):
 
 if __name__ == "__main__":
 
-    # container = Container()
-    # container.init_resources()
-    # container.wire(modules=[__name__])
+    container = Container()
+    container.init_resources()
+    container.wire(modules=[__name__])
 
     # TODO: configure the logging
     logging.basicConfig(
