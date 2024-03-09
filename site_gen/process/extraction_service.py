@@ -8,6 +8,7 @@ import shutil
 from site_gen.node.page import Page
 from site_gen.node.album import Album
 from site_gen.file.yaml_file import YAMLFile
+from site_gen.node.page_content import PageContent
 
 from site_gen.process.process_service import ProcessService
 
@@ -49,9 +50,9 @@ class ExtractionService(ProcessService):
             for album in page.get_albums():
                 logging.info("{}: Processing album: {}".format(__class__.__name__, album.index_page.file_system_path))
 
-                album_path = os.path.join(
-                    self._target_dir,
-                    os.path.dirname(album.index_page.host_page_path_normalised))
+                # album_path = os.path.join(
+                    # self._target_dir,
+                    # os.path.dirname(album.index_page.host_page_path_normalised))
 
                 # self._ensure_sub_folders_exist(album_path)
 
@@ -77,15 +78,17 @@ class ExtractionService(ProcessService):
 
                 self._copy_thumbnail(album=album, target_path=thumbnail_target_path)
         else:
-            pass
+            # pass
             # extract contents
+            logging.info("Processing content page {}".format(page))
+
             content = page.get_content()
 
             # # update index file
+            self._update_content_data_file(file_name='', content=content)
 
             # copy image / other content files
 
-            logging.info("Processing content page {}".format(page))
 
     def _ensure_sub_folders_exist(self, path:str) -> None:
         """
@@ -128,6 +131,7 @@ class ExtractionService(ProcessService):
         data['contents'][key]['title'] = album.title
         data['contents'][key]['sub_title'] = album.sub_title
         data['contents'][key]['type'] = album.type.name
+        data['contents'][key]['source_page'] = album.source_page
         data['contents'][key]['thumb'] = {}
         data['contents'][key]['thumb']['src'] = thumbnail_path
         data['contents'][key]['thumb']['height'] = album.thumbnail_height
@@ -135,6 +139,14 @@ class ExtractionService(ProcessService):
         data['contents'][key]['thumb']['alt'] = album.thumbnail_alt
 
         yaml_file.write(data=data)
+
+    def _update_content_data_file(self, file_name:str, content:PageContent) -> None:
+        # self._ensure_directory_exists(path=file_name)
+
+        logging.info("{} _update_content_data_file {} {}".format(__class__.__name__, file_name, content))
+
+        key = ''
+
 
     def _copy_thumbnail(self, album:Album, target_path:str) -> None:
         logging.info("copy thumbnail file {}".format(target_path))

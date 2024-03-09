@@ -20,3 +20,16 @@
     [] construct with a LinkedFile object?
 
 [] Refactor duplicated _copy_file methods
+
+
+* 8/3/2024
+* How to add leaf page contents to the index yaml files?
+* Build a node tree with all the data for writing to the index.yml files,
+    implementing depth first traversal of the soure files
+    so that the process reads the leaf page data for a node being processed in the tree
+    currently each source page is read independently, so there is the need to be able to
+    identify the item in the index.yml file, written previously, to update
+
+* Node tree works in all processes
+    * html to html, html to yml, yml to html
+    * the processes treat html files as a source of data & links between files

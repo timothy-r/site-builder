@@ -9,6 +9,8 @@ class Album():
         properties
             page - LinkedFile
             title - string
+            type - NodeType
+            source_page - of this album entry
             sub_title - string (default is title)
             thumbnail:
                 LinkedFile
@@ -19,6 +21,7 @@ class Album():
     index_page:LinkedFile
     title:str
     type:NodeType
+    source_page:str
     thumbnail:LinkedFile
     thumbnail_width:int
     thumbnail_height:int

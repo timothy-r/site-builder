@@ -184,11 +184,13 @@ class Page:
         last_dir = last_dir.lower()
 
         album_path = os.path.join(last_dir, album_path)
+        index_page = self._get_linked_file(link_path=album_path)
 
         return Album(
-            index_page = self._get_linked_file(link_path=album_path),
+            index_page=index_page,
             title = title,
             sub_title = title,
+            source_page= index_page.file_system_path,
             type=NodeType.PAGE,
             thumbnail= self._get_linked_file(link_path=thumb_nail.get('src')),
             thumbnail_alt = thumb_nail.get('alt'),
@@ -207,12 +209,14 @@ class Page:
         sub_title = album.find('p').text.strip()
         thumb_nail = album.find('img')
 
-        return Album(
-            index_page = self._get_linked_file(link_path=album_path),
+        index_page = self._get_linked_file(link_path=album_path)
 
+        return Album(
+            index_page=index_page,
             title = title,
             sub_title = sub_title,
             type=NodeType.DIRECTORY,
+            source_page=index_page.file_system_path,
             thumbnail =  self._get_linked_file(link_path=thumb_nail.get('src')),
 
             thumbnail_alt = thumb_nail.get('alt'),
