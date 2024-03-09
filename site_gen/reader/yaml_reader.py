@@ -1,6 +1,6 @@
 from site_gen.reader.reader import Reader
 
-class HTMLReader(Reader):
+class YAMLReader(Reader):
 
     def get_title() -> str:
         pass
