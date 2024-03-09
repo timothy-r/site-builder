@@ -16,6 +16,7 @@ class AlbumTest(unittest.TestCase):
             index_page=page,
             title=title,
             type=NodeType.DIRECTORY,
+            source_page='index.html',
             thumbnail=thumbnail,
             thumbnail_height=100,
             thumbnail_width=100
