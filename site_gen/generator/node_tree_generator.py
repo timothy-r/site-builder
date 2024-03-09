@@ -8,7 +8,7 @@ class NodeTreeGenerator:
     def __init__(self) -> None:
         pass
 
-    def generate(source_file:str) -> Node:
+    def generate(self, source_file:str) -> Node:
         pass
 
     def _process_node(self, node:Node) -> None:
