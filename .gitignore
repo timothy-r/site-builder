@@ -3,3 +3,6 @@
 target/
 *.log
 new_site/
+*.txt
+site_data/
+build_data/

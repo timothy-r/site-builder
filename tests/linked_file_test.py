@@ -83,7 +83,7 @@ class LinkedFileTest(unittest.TestCase):
             source_path='/d/343/image.png',
             parent_path='/dir/pages/content.html'
         )
-        site_file_path = file.site_file_path
+        site_file_path = file.host_page_path
         self.assertEqual('/d/343/image.png', site_file_path)
 
     # def test_rename_paths(self) -> None:

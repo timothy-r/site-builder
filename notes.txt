@@ -12,5 +12,53 @@
 
 * pages are either indexes (parents) or leaf pages
 
-* use the page & linkedFile classes
-    * get linked file to rename itself & use that when writing the data yaml files
+[] Consider updating Page class
+(changes the process classes)
+    [] to read it's own html
+    [] get_pages() returns Page objects
+    [] get_files() returns LinkedFile objects
+    [] construct with a LinkedFile object?
+
+[] Refactor duplicated _copy_file methods
+
+
+* 8/3/2024
+* How to add leaf page contents to the index yaml files?
+* Build a node tree with all the data for writing to the index.yml files,
+    implementing depth first traversal of the soure files
+    so that the process reads the leaf page data for a node being processed in the tree
+    currently each source page is read independently, so there is the need to be able to
+    identify the item in the index.yml file, written previously, to update
+
+* Node tree works for all processes
+    * html to html, html to yml, yml to html
+    * the processes treat html files as a source of data & links between files
+
+* start from a source file
+    * create the root node
+    * set file as node.source
+    * process node
+        * read node.source (using a reader for the type of source file), extract data, add to node instance
+        * get source files of children from source data
+        * create a node per child, add to parent node
+        * process each child node (recursive)
+
+* node tree generator
+    * has a reader factory (reader_factory->reader_for_file('*.html'))
+    * has a node factory
+
+    * init with generate(source_file:str) -> Node:
+        node = self.node_factory(source_file)
+        self._process_node(self, node)
+        return node
+
+    * def self._process_node(self, node:Node) (recursive)
+        reader = self.reader_factory(node.source_file)
+        node.title = reader.title
+        node.sub_title = reader.sub_title
+        node.contents = reader.contents
+        # etc
+        for child in reader.children:
+            child_node = self.node_factory(child.source_file)
+            node.add_child(child_node)
+            self._process_node(child_node)

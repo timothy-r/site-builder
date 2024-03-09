@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import os
+import logging
 
 from site_gen.node.page import Page
 
@@ -34,7 +35,7 @@ class ProcessService(ABC):
 
         """
         if not os.path.exists(source_path):
-            # print("Source path does not exist: {}".format(source_path))
+            # logging.info("Source path does not exist: {}".format(source_path))
             return
 
         if source_path in self._processed_pages:
@@ -43,7 +44,7 @@ class ProcessService(ABC):
             """
             return
 
-        print("ExtractionService: Processing page {}".format(source_path))
+        logging.info("{}: Processing page {}".format(__class__.__name__, source_path))
 
         try:
 
@@ -63,13 +64,13 @@ class ProcessService(ABC):
 
                 for key in pages.keys():
 
-                    # print("Extracted page {} from {}".format(pages[key], source_path))
+                    # logging.info("Extracted page {} from {}".format(pages[key], source_path))
 
                     # sub_site_path = os.path.join(page_site_dir, key)
                     self._process_page(source_path=pages[key], site_path=key)
 
         except Exception as e:
-            print ("ERROR processing {} : {}".format(source_path, e))
+            logging.exception("{} processing {} : {}".format(__class__.__name__, source_path, e))
 
 
     def _ensure_directory_exists(self, path:str) -> None:
@@ -77,4 +78,4 @@ class ProcessService(ABC):
         try:
             os.makedirs(name=location, exist_ok=True)
         except FileExistsError as error:
-            print("_ensure_directory_exists failed {}".format(error))
+            logging.error("_ensure_directory_exists failed {}".format(error))
