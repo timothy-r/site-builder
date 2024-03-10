@@ -43,6 +43,11 @@
         * create a node per child, add to parent node
         * process each child node (recursive)
 
+* IMPORTANT - node data is in both the index page and the source page
+    * algorithm needs to read a node from both sources
+        * index has thumbnail, title(duplicated), source path
+        * source has contents, children
+
 * node tree generator
     * has a reader factory (reader_factory->reader_for_file('*.html'))
     * has a node factory
@@ -57,8 +62,16 @@
         node.title = reader.title
         node.sub_title = reader.sub_title
         node.contents = reader.contents
+
+        -- either leave the thumbnail data in the parent index yaml files or read from either file
+
+        if not node.thumbnail:
+            node.thumbnail = reader.thumbnail ??
+
         # etc
         for child in reader.children:
             child_node = self.node_factory(child.source_file)
+            # set child_node properties from the parent - eg thumbnail
+            child_node.thumbnail = child.thumbnail
             node.add_child(child_node)
             self._process_node(child_node)
